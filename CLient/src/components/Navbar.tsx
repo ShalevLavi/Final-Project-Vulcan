@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 
 export default function Navbar() {
     return (
-        <nav className="bg-gray-950 text-white px-8 py-4 flex justify-between items-center">
+        <nav className="bg-gray-950 text-white pl-4 pr-8 py-4 flex justify-between items-center">
             <Link to="/" className="text-2xl font-bold tracking-widest">
-                VULCAN
+                <img src="/src/assets/VULCAN - LOGO .png" alt="Vulcan Logo" className="h-10 w-auto" />
             </Link>
             <div className="flex gap-8">
                 <Link to="/" className="hover:text-blue-600 transition">Home</Link>
