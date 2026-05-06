@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import styles from './Collections.module.css'
 
 const offRoadCars = [
@@ -103,7 +104,9 @@ const luxuryCars = [
 ]
 
 export default function Collections() {
-    const [activeTab, setActiveTab] = useState<'offroad' | 'luxury'>('offroad')
+    const location = useLocation()
+    const initialTab = (location.state as { tab?: string })?.tab === 'luxury' ? 'luxury' : 'offroad'
+    const [activeTab, setActiveTab] = useState<'offroad' | 'luxury'>(initialTab)
 
     const cars = activeTab === 'offroad' ? offRoadCars : luxuryCars
 

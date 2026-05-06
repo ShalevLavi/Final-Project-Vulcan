@@ -6,12 +6,14 @@ const collections = [
         title: 'Off-Road',
         desc: 'Built to handle extremes with confidence and control. Raw power meets intelligent engineering.',
         path: '/collections',
+        tab: 'offroad',
     },
     {
         num: '02',
         title: 'Luxury',
         desc: 'Silence. Precision. Presence. Crafted for those who expect nothing less than extraordinary.',
         path: '/collections',
+        tab: 'luxury',
     },
 ]
 
@@ -207,8 +209,8 @@ export default function Home() {
                         Our Collections
                     </p>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', maxWidth: '860px', margin: '0 auto' }}>
-                        {collections.map(({ num, title, desc, path }) => (
-                            <Link key={num} to={path} className="vl-card">
+                        {collections.map(({ num, title, desc, path, tab }) => (
+                            <Link key={num} to={path} state={{ tab }} className="vl-card">
                                 <div>
                                     <span style={{ fontSize: '11px', color: '#2a3a60', letterSpacing: '0.25em', display: 'block', marginBottom: '16px' }}>{num}</span>
                                     <h2 className="vl-card-title">{title}</h2>
