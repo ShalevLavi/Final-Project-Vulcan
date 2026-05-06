@@ -1,0 +1,342 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+@keyframes orbFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(25px);
+    }
+}
+
+.page {
+    background: #080c12;
+    color: #f0ece4;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    padding-top: 69px;
+    overflow-x: hidden;
+}
+
+.bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.bgOrb {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(30, 58, 138, 0.2) 0%, transparent 70%);
+    top: -150px;
+    right: -100px;
+    border-radius: 50%;
+    animation: orbFloat 12s ease-in-out infinite;
+}
+
+.bgGrid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(30, 58, 138, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 58, 138, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 70% 30%, black 0%, transparent 80%);
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 48px;
+}
+
+/* Header */
+.headerTag {
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+.headerTitle {
+    font-size: 46px;
+    font-weight: 300;
+    color: #dde4f0;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+}
+
+.headerDesc {
+    font-size: 15px;
+    color: #5C6A8A;
+    font-weight: 300;
+    max-width: 480px;
+    line-height: 1.8;
+    margin-bottom: 36px;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    border-bottom: 0.5px solid #0f1828;
+    margin-bottom: 32px;
+}
+
+.tab {
+    padding: 14px 32px;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #3a4a70;
+    margin-bottom: -0.5px;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+}
+
+.tab:hover {
+    color: #7a8aaa;
+}
+
+.tabActive {
+    color: #8aaae0;
+    border-bottom-color: #4a7adf;
+}
+
+/* Card List */
+.cardList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Card */
+.card {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    border: 0.5px solid #1a2848;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(10, 18, 38, 0.6);
+    transition: border-color 0.3s;
+}
+
+.card:hover {
+    border-color: #2a4a9a;
+}
+
+/* Card Image */
+.cardImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 300px;
+}
+
+.cardImgOffroad {
+    background: linear-gradient(135deg, #0a1828, #1a2848, #080c12);
+}
+
+.cardImgLuxury {
+    background: linear-gradient(135deg, #0a0e28, #1a1848, #080c12);
+}
+
+.cardImgLabel {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: #2a3a60;
+    text-transform: uppercase;
+}
+
+.cardImgNum {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    font-size: 48px;
+    font-weight: 300;
+    color: rgba(74, 122, 223, 0.08);
+    letter-spacing: -0.02em;
+}
+
+.cardImgPlaceholder {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: #1e2e50;
+    text-transform: uppercase;
+}
+
+/* Card Info */
+.cardInfo {
+    padding: 32px 36px;
+    border-left: 0.5px solid #1a2848;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cardTag {
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.cardName {
+    font-size: 28px;
+    font-weight: 300;
+    color: #dde4f0;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+}
+
+.cardTagline {
+    font-size: 13px;
+    color: #4869B0;
+    font-style: italic;
+    margin-bottom: 14px;
+    font-weight: 300;
+}
+
+.cardDesc {
+    font-size: 13px;
+    color: #5C6A8A;
+    line-height: 1.85;
+    margin-bottom: 24px;
+}
+
+.divider {
+    height: 0.5px;
+    background: #0f1828;
+    margin-bottom: 20px;
+}
+
+/* Specs */
+.specs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.spec {
+    padding: 12px 14px;
+    background: rgba(10, 18, 38, 0.8);
+    border: 0.5px solid #1a2848;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.specVal {
+    font-size: 17px;
+    font-weight: 300;
+    color: #8aaae0;
+    margin-bottom: 3px;
+}
+
+.specLabel {
+    font-size: 9px;
+    color: #3a4a70;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+/* Highlights */
+.highlights {
+    margin-bottom: 24px;
+}
+
+.highlightsTitle {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.highlightList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.highlight {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.dot {
+    width: 3px;
+    height: 3px;
+    background: #3D5899;
+    border-radius: 50%;
+    margin-top: 7px;
+    flex-shrink: 0;
+}
+
+.highlightText {
+    font-size: 15px;
+    color: #5C6A8A;
+    line-height: 1.7;
+}
+
+/* Card Bottom */
+.cardBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 0.5px solid #0f1828;
+}
+
+.featureTags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.featureTag {
+    font-size: 13px;
+    color: #3a4a70;
+    border: 0.5px solid #1a2848;
+    padding: 4px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+.cta {
+    font-size: 12px;
+    color: #526BA1;
+    letter-spacing: 0.1em;
+    border: 0.5px solid #1e2e50;
+    padding: 9px 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: transparent;
+    white-space: nowrap;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+    flex-shrink: 0;
+}
+
+.cta:hover {
+    border-color: #526BA1;
+    color: #8aaae0;
+}
