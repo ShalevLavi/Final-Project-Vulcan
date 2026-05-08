@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+@keyframes orbFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(25px);
+    }
+}
+
+.page {
+    background: #080c12;
+    color: #f0ece4;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    padding-top: 69px;
+    overflow-x: hidden;
+}
+
+.bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.bgOrb1 {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(30, 58, 138, 0.18) 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    border-radius: 50%;
+    animation: orbFloat 12s ease-in-out infinite;
+}
+
+.bgOrb2 {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(15, 40, 100, 0.12) 0%, transparent 70%);
+    bottom: 0;
+    left: -80px;
+    border-radius: 50%;
+    animation: orbFloat 16s ease-in-out infinite reverse;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 64px 48px;
+}
+
+/* Hero */
+.hero {
+    margin-bottom: 150px;
+    max-width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tag {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 68px;
+    font-weight: 300;
+    color: #dde4f0;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+}
+
+.titleAccent {
+    color: #4869B0;
+}
+
+.desc {
+    font-size: 15px;
+    color: #5C6A8A;
+    line-height: 1.9;
+    font-weight: 300;
+    max-width: 520px;
+    text-align: center;
+}
+
+/* Story */
+.story {
+    display: grid;
+    grid-template-columns: 1.4fr 0.6fr;
+    gap: 64px;
+    margin-bottom: 72px;
+    padding-bottom: 72px;
+    border-bottom: 0.5px solid #0f1828;
+    align-items: start;
+}
+
+.storyTag {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.storyTitle {
+    font-size: 30px;
+    font-weight: 300;
+    color: #8aaae0;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+.storyText {
+    font-size: 14px;
+    color: #5C6A8A;
+    line-height: 2;
+    font-weight: 300;
+    margin-bottom: 16px;
+}
+
+.storyStats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.storyStat {
+    padding: 20px 24px;
+    background: rgba(10, 18, 38, 0.6);
+    border: 0.5px solid #1a2848;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.storyStat:hover {
+    border-color: #2a4a9a;
+}
+
+.storyStatNum {
+    font-size: 32px;
+    font-weight: 300;
+    color: #8aaae0;
+    margin-bottom: 4px;
+}
+
+.storyStatLabel {
+    font-size: 11px;
+    color: #3a4a70;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.storyStatDesc {
+    font-size: 12px;
+    color: #5C6A8A;
+    margin-top: 6px;
+    line-height: 1.6;
+}
+
+/* Values */
+.valuesTag {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+}
+
+.valuesGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 72px;
+}
+
+.valueCard {
+    padding: 28px 24px;
+    background: rgba(10, 18, 38, 0.6);
+    border: 0.5px solid #1a2848;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.valueCard:hover {
+    border-color: #2a4a9a;
+    transform: translateY(-2px);
+}
+
+.valueIcon {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.valueTitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: #8aaae0;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+}
+
+.valueDesc {
+    font-size: 12px;
+    color: #5C6A8A;
+    line-height: 1.8;
+}
+
+/* Closing */
+.closing {
+    text-align: center;
+    padding: 48px 0 16px;
+    border-top: 0.5px solid #0f1828;
+}
+
+.closingTitle {
+    font-size: 36px;
+    font-weight: 300;
+    color: #dde4f0;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.closingSub {
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: #3D5899;
+    text-transform: uppercase;
+}
