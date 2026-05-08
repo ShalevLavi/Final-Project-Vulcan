@@ -1,0 +1,430 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+@keyframes orbFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(25px);
+    }
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.page {
+    background: #080c12;
+    color: #f0ece4;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    padding-top: 69px;
+}
+
+/* Background */
+.bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.bgOrb1 {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(30, 58, 138, 0.2) 0%, transparent 70%);
+    top: -150px;
+    left: -100px;
+    border-radius: 50%;
+    animation: orbFloat 12s ease-in-out infinite;
+}
+
+.bgOrb2 {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(15, 40, 100, 0.15) 0%, transparent 70%);
+    top: 150px;
+    right: -80px;
+    border-radius: 50%;
+    animation: orbFloat 16s ease-in-out infinite reverse;
+}
+
+.bgGrid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(30, 58, 138, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 58, 138, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 80px 48px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heroTag {
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.heroTitle {
+    font-size: 70px;
+    font-weight: 300;
+    line-height: 1.15;
+    color: #dde4f0;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+}
+
+.heroTitleAccent {
+    color: #4869B0;
+}
+
+.heroDesc {
+    font-size: 15px;
+    color: #6a7a9a;
+    line-height: 1.9;
+    max-width: 480px;
+    margin-bottom: 36px;
+    font-weight: 300;
+}
+
+.heroBtns {
+    display: flex;
+    gap: 12px;
+}
+
+.btnPrimary {
+    background: #e8e4dc;
+    color: #080c12;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    padding: 13px 32px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btnPrimary:hover {
+    background: #ffffff;
+    color: #000;
+}
+
+.btnSecondary {
+    background: transparent;
+    color: #4F628F;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    padding: 13px 32px;
+    border-radius: 999px;
+    border: 0.5px solid #1e2e50;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+}
+
+.btnSecondary:hover {
+    border-color: #92ADEF;
+    color: #92ADEF;
+}
+
+/* Marquee */
+.marqueeWrap {
+    overflow: hidden;
+    border-top: 0.5px solid #0f1828;
+    border-bottom: 0.5px solid #0f1828;
+    padding: 13px 0;
+    background: #050810;
+}
+
+.marqueeTrack {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+}
+
+.marqueeItem {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #3D5899;
+    padding: 0 36px;
+    white-space: nowrap;
+}
+
+/* Stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 0.5px solid #0f1828;
+}
+
+.stat {
+    padding: 28px 0;
+    text-align: center;
+    border-right: 0.5px solid #0f1828;
+}
+
+.stat:last-child {
+    border-right: none;
+}
+
+.statNum {
+    font-size: 30px;
+    font-weight: 300;
+    color: #6a88c0;
+    margin-bottom: 6px;
+}
+
+.statLabel {
+    font-size: 15px;
+    color: #5C6A8A;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+/* Collections */
+.collectionsSection {
+    padding: 56px 48px;
+}
+
+.sectionTag {
+    font-size: 13px;
+    letter-spacing: 0.35em;
+    color: #3D5899;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+}
+
+.collectionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+/* Collection Cards */
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 36px 32px;
+    cursor: pointer;
+    background: rgba(10, 18, 38, 0.7);
+    border: 0.5px solid #1a2848;
+    border-radius: 10px;
+    min-height: 230px;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #1e3a7a;
+    transition: background 0.35s;
+}
+
+.card:hover {
+    background: rgba(14, 26, 58, 0.9);
+    border-color: #2a4a9a;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 40px rgba(8, 16, 48, 0.6);
+}
+
+.card:hover::before {
+    background: #5a8aef;
+}
+
+.card:hover .cardTitle {
+    color: #c0d4f8;
+}
+
+.card:hover .cardArrow {
+    color: #5a8aef;
+    transform: translateX(4px);
+}
+
+.card:hover .cardBadge {
+    border-color: #2a4a9a;
+    color: #5a8aef;
+}
+
+.cardNum {
+    font-size: 11px;
+    color: #2a3a60;
+    letter-spacing: 0.25em;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.cardTitle {
+    font-size: 30px;
+    font-weight: 300;
+    color: #5a78b0;
+    transition: color 0.35s;
+    margin-bottom: 12px;
+}
+
+.cardDesc {
+    font-size: 13px;
+    color: #5C6A8A;
+    line-height: 1.8;
+}
+
+.cardBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+}
+
+.cardBadge {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: #3a4a70;
+    border: 0.5px solid #1a2848;
+    padding: 6px 16px;
+    border-radius: 999px;
+    transition: all 0.35s;
+}
+
+.cardArrow {
+    font-size: 16px;
+    color: #2a3a60;
+    transition: all 0.35s;
+}
+
+/* About */
+.aboutSection {
+    padding: 56px 48px;
+    border-top: 0.5px solid #0f1828;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+}
+
+.aboutTag {
+    font-size: 13px;
+    letter-spacing: 0.35em;
+    color: #3D5899;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+.aboutTitle {
+    font-size: 28px;
+    font-weight: 300;
+    color: #6a88c0;
+    line-height: 1.35;
+    margin-bottom: 18px;
+}
+
+.aboutDesc {
+    font-size: 14px;
+    color: #5C6A8A;
+    line-height: 2;
+    font-weight: 300;
+}
+
+.benefitsList {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.benefit {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.benefitDot {
+    width: 4px;
+    height: 4px;
+    background: #2a4a8a;
+    border-radius: 50%;
+    margin-top: 8px;
+    flex-shrink: 0;
+}
+
+.benefitText {
+    font-size: 13px;
+    color: #5C6A8A;
+    line-height: 1.8;
+    font-weight: 300;
+}
+
+/* Footer */
+.footer {
+    padding: 24px 48px;
+    border-top: 0.5px solid #0f1828;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footerLogo {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    color: #3D5899;
+}
+
+.footerLinks {
+    display: flex;
+    gap: 24px;
+}
+
+.footerLink {
+    font-size: 11px;
+    color: #3D5899;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+}
+
+.footerCopy {
+    font-size: 11px;
+    color: #3D5899;
+    letter-spacing: 0.08em;
+}
