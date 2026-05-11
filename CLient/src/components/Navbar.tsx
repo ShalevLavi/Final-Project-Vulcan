@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useModalStore } from '../store/useModalStore'
 
 export default function Navbar() {
     const location = useLocation()
     const [menuOpen, setMenuOpen] = useState(false)
+
+    const openLogin = useModalStore((state) => state.openLogin)
 
     const linkClass = (path: string) =>
         `text-sm tracking-wider transition-colors duration-300 ${location.pathname === path ? 'text-[#B6BED1]' : 'text-[#8a9ab8] hover:text-[#B6BED1]'
@@ -32,12 +35,12 @@ export default function Navbar() {
                     <Link to="/about" className={linkClass('/about')}>
                         About
                     </Link>
-                    <Link
-                        to="/login"
-                        className="text-[#4F628F] text-sm tracking-wider px-6 py-2.5 rounded-full border border-[#1e2e50] transition-all duration-300 hover:border-[#788EBF] hover:text-[#788EBF]"
+                    <button
+                        onClick={openLogin}
+                        className="text-[#4F628F] text-sm tracking-wider px-6 py-2.5 rounded-full border border-[#1e2e50] transition-all duration-300 hover:border-[#788EBF] hover:text-[#788EBF] bg-transparent cursor-pointer"
                     >
                         Owner Portal
-                    </Link>
+                    </button>
                 </div>
 
                 {/* Hamburger — mobile only */}
