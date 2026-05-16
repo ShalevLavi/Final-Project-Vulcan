@@ -3,6 +3,8 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import connectDB from './config/db'
 import authRoutes from './routes/authRoutes'
+import './models/Car'
+import './models/Owner'
 
 dotenv.config()
 
