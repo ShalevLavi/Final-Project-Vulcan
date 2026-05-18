@@ -1,12 +1,52 @@
 import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { useModalStore } from '../store/useModalStore'
+import { loginOwner } from '../api/auth'
+
 
 export default function LoginModal() {
-    const { isLoginOpen, closeLogin } = useModalStore()
+    const { isLoginOpen, closeLogin, setAuthData } = useModalStore()
     const [name, setName] = useState('')
     const [vin, setVin] = useState('')
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
     if (!isLoginOpen) return null
+
+    const handleSubmit = async () => {
+        // Client side validation
+        if (!name.trim() || !vin.trim()) {
+            setError('Please fill in all fields')
+            return
+        }
+
+        if (!/^[A-Za-z ]+$/.test(name)) {
+            setError('Name must contain only letters')
+            return
+        }
+
+        if (!/^[A-Za-z0-9]{4}$/.test(vin)) {
+            setError('VIN must be exactly 4 alphanumeric characters')
+            return
+        }
+
+        try {
+            setLoading(true)
+            setError('')
+
+            const data = await loginOwner(name.trim(), vin.toUpperCase())
+
+            setAuthData(data.token, data.owner, data.car)
+
+            navigate('/dashboard')
+
+        } catch (err: any) {
+            setError(err.message || 'Invalid name or VIN')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <>
@@ -42,6 +82,13 @@ export default function LoginModal() {
                         Enter your registered name and the last 4 digits of your Vulcan VIN to access your vehicle profile.
                     </p>
 
+                    {/* Error message */}
+                    {error && (
+                        <div className="mb-6 px-4 py-3 rounded-md border border-red-900 bg-red-950/30 text-red-400 text-sm">
+                            {error}
+                        </div>
+                    )}
+
                     {/* Name field */}
                     <div className="mb-5">
                         <label className="block text-[11px] tracking-[0.25em] text-[#526BA1] uppercase mb-2">
@@ -49,14 +96,17 @@ export default function LoginModal() {
                         </label>
                         <input
                             type="text"
-                            placeholder="e.g. John Doe"
+                            placeholder="e.g. Shalev Lavi"
                             value={name}
-                            onChange={e => setName(e.target.value)}
+                            onChange={e => {
+                                setName(e.target.value)
+                                setError('')
+                            }}
                             className="w-full bg-[#050810] border border-[#1a2848] rounded-md px-4 py-3.5 text-[#dde4f0] text-base placeholder-[#2a3a60] outline-none focus:border-[#4869B0] transition-colors duration-300"
                         />
                     </div>
 
-                    {/* VIN field */}
+                    {/*VIN field*/}
                     <div className="mb-8">
                         <label className="block text-[11px] tracking-[0.25em] text-[#526BA1] uppercase mb-2">
                             Last 4 VIN Digits
@@ -66,7 +116,10 @@ export default function LoginModal() {
                             placeholder="X4K9"
                             value={vin}
                             maxLength={4}
-                            onChange={e => setVin(e.target.value.toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g, ''))}
+                            onChange={e => {
+                                setVin(e.target.value.toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g, ''))
+                                setError('')
+                            }}
                             className="w-full bg-[#050810] border border-[#1a2848] rounded-md px-4 py-4 text-[#dde4f0] text-lg placeholder-[#2a3a60] outline-none focus:border-[#4869B0] transition-colors duration-300 tracking-[0.3em] uppercase"
                         />
                         <p className="text-xs text-[#2a3a60] mt-2">
@@ -74,25 +127,28 @@ export default function LoginModal() {
                         </p>
                     </div>
 
-                    {/* Divider */}
+                    {/* Divider*/}
                     <div className="h-px bg-[#0f1828] mb-6" />
 
                     {/* Submit */}
                     <button
-                        className="w-full bg-[#e8e4dc] hover:bg-white text-[#080c12] text-base font-medium tracking-wider py-4 rounded-md transition-all duration-300 cursor-pointer mb-4"
+                        onClick={handleSubmit}
+                        disabled={loading}
+                        className="w-full bg-[#e8e4dc] hover:bg-white text-[#080c12] text-base font-medium tracking-wider py-4 rounded-md transition-all duration-300 cursor-pointer mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Access My Vehicle
+                        {loading ? 'Verifying...' : 'Access My Vehicle'}
                     </button>
 
-                    {/* Footer note */}
-                    <p className="text-center text-[11px] text-[#2a3a60]">
+                    {/*Footer note */}
+                    <p className="text-center text-xs text-[#2a3a60]">
                         Not a Vulcan owner yet?{' '}
-                        <span
+                        <Link
+                            to={"/collections"}
                             onClick={closeLogin}
-                            className="text-[#526BA1] text-base cursor-pointer hover:text-[#8aaae0] transition-colors duration-300"
+                            className="text-[#526BA1] cursor-pointer hover:text-[#8aaae0] transition-colors duration-300"
                         >
                             Explore our collections →
-                        </span>
+                        </Link>
                     </p>
 
                 </div>
