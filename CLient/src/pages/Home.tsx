@@ -65,9 +65,6 @@ export default function Home() {
                         <Link to="/collections" className={styles.btnPrimary}>
                             Explore Collections
                         </Link>
-                        <Link to="/login" className={styles.btnSecondary}>
-                            Owner Portal
-                        </Link>
                     </div>
                 </section>
 
