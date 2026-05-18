@@ -63,6 +63,26 @@
     margin-bottom: 36px;
     border-bottom: 0.5px solid #0f1828;
     padding-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.logoutBtn {
+    font-size: 12px;
+    color: #526BA1;
+    border: 0.5px solid #1e2e50;
+    padding: 8px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+}
+
+.logoutBtn:hover {
+    border-color: #788EBF;
+    color: #788EBF;
 }
 
 .headerTag {

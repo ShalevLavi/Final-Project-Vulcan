@@ -1,29 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useModalStore } from '../../store/useModalStore'
 import styles from './Dashboard.module.css'
 
-const carDetails = {
-    name: 'Zaurus',
-    year: '2024',
-    vin: '****-****-****-X4K9',
-    color: 'Midnight Black',
-    hp: '520 HP',
-    lastService: 'Mar 2024',
-    nextService: 'Sep 2024',
-}
-
-const maintenanceHistory = [
-    { name: 'Annual Service & Oil Change', date: 'March 15, 2024', status: 'done' },
-    { name: 'Brake Inspection', date: 'January 8, 2024', status: 'done' },
-    { name: 'Tire Rotation & Alignment', date: 'Scheduled · September 2024', status: 'pending' },
-]
-
 export default function Dashboard() {
+    const { token, owner, car, logout } = useModalStore()
+    const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState<'details' | 'maintenance'>('details')
     const [chatOpen, setChatOpen] = useState(false)
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([
-        { from: 'support', text: 'Hello! How can we help you with your Zaurus today?' },
+        { from: 'support', text: `Hello ${owner?.name || 'there'}! How can we help you with your ${car?.carModel || 'vehicle'} today?` },
     ])
+
+    // Redirect if not logged in
+    useEffect(() => {
+        if (!token) {
+            navigate('/')
+        }
+    }, [token, navigate])
 
     const sendMessage = () => {
         if (!message.trim()) return
@@ -33,6 +28,8 @@ export default function Dashboard() {
             setMessages(prev => [...prev, { from: 'support', text: 'Thanks for your message! A Vulcan specialist will be with you shortly.' }])
         }, 1000)
     }
+
+    if (!token || !car || !owner) return null
 
     return (
         <main className={styles.page}>
@@ -47,9 +44,17 @@ export default function Dashboard() {
 
                 {/* Header */}
                 <div className={styles.header}>
-                    <p className={styles.headerTag}>Owner Dashboard</p>
-                    <h1 className={styles.headerTitle}>Welcome back, John</h1>
-                    <p className={styles.headerSub}>{carDetails.name} · VIN {carDetails.vin}</p>
+                    <div>
+                        <p className={styles.headerTag}>Owner Dashboard</p>
+                        <h1 className={styles.headerTitle}>Welcome back, {owner.name}</h1>
+                        <p className={styles.headerSub}>Vulcan {car.carModel} · VIN ****-****-****-{owner.vinLast4}</p>
+                    </div>
+                    <button
+                        onClick={() => { logout(); navigate('/') }}
+                        className={styles.logoutBtn}
+                    >
+                        Log Out
+                    </button>
                 </div>
 
                 {/* Tabs */}
@@ -77,35 +82,27 @@ export default function Dashboard() {
                         {/* Right */}
                         <div className={styles.carRight}>
                             <div>
-                                <p className={styles.carYear}>2024</p>
+                                <p className={styles.carYear}>{car.year}</p>
                                 <h2 className={styles.carName}>
-                                    Vulcan <span className={styles.carNameAccent}>Zaurus</span>
+                                    Vulcan <span className={styles.carNameAccent}>{car.carModel}</span>
                                 </h2>
                             </div>
                             <div className={styles.infoGrid}>
                                 <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Color</p>
-                                    <p className={styles.infoVal}>Midnight Black</p>
+                                    <p className={styles.infoVal}>{car.color}</p>
                                 </div>
                                 <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Horsepower</p>
-                                    <p className={styles.infoVal}>520 HP</p>
+                                    <p className={styles.infoVal}>{car.horsepower} HP</p>
                                 </div>
                                 <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Last Service</p>
-                                    <p className={styles.infoVal}>Mar 2024</p>
+                                    <p className={styles.infoVal}>{car.lastService}</p>
                                 </div>
                                 <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Next Service</p>
-                                    <p className={styles.infoVal}>Sep 2024</p>
-                                </div>
-                                <div className={styles.infoCard}>
-                                    <p className={styles.infoLabel}>Warranty</p>
-                                    <p className={styles.infoVal}>Valid until 05/2027</p>
-                                </div>
-                                <div className={styles.infoCard}>
-                                    <p className={styles.infoLabel}>Drive Type</p>
-                                    <p className={styles.infoVal}>AWD</p>
+                                    <p className={styles.infoVal}>{car.nextService}</p>
                                 </div>
                             </div>
                         </div>
@@ -119,17 +116,20 @@ export default function Dashboard() {
                         <p className={styles.maintTitle}>Service History</p>
                     </div>
                     <div className={styles.maintList}>
-                        {maintenanceHistory.map(({ name, date, status }) => (
-                            <div key={name} className={styles.maintItem}>
-                                <div>
-                                    <p className={styles.maintItemName}>{name}</p>
-                                    <p className={styles.maintItemDate}>{date}</p>
-                                </div>
-                                <span className={status === 'done' ? styles.statusDone : styles.statusPending}>
-                                    {status === 'done' ? 'Completed' : 'Upcoming'}
-                                </span>
+                        <div className={styles.maintItem}>
+                            <div>
+                                <p className={styles.maintItemName}>Annual Service & Oil Change</p>
+                                <p className={styles.maintItemDate}>{car.lastService}</p>
                             </div>
-                        ))}
+                            <span className={styles.statusDone}>Completed</span>
+                        </div>
+                        <div className={styles.maintItem}>
+                            <div>
+                                <p className={styles.maintItemName}>Upcoming Service</p>
+                                <p className={styles.maintItemDate}>Scheduled · {car.nextService}</p>
+                            </div>
+                            <span className={styles.statusPending}>Upcoming</span>
+                        </div>
                     </div>
                 </div>
 
