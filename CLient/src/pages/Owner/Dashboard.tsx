@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useModalStore } from '../../store/useModalStore'
 import styles from './Dashboard.module.css'
-import { getMaintenance } from '../../api/auth'
+import { getMaintenance, requestService } from '../../api/auth'
 
 export default function Dashboard() {
     const { token, owner, car, logout } = useModalStore()
@@ -14,6 +14,11 @@ export default function Dashboard() {
         { from: 'support', text: `Hello ${owner?.name || 'there'}! How can we help you with your ${car?.carModel || 'vehicle'} today?` },
     ])
     const [maintenanceList, setMaintenanceList] = useState<any[]>([])
+    const [showServiceForm, setShowServiceForm] = useState(false)
+    const [selectedService, setSelectedService] = useState('')
+    const [selectedDate, setSelectedDate] = useState<1 | 2 | null>(null)
+    const [serviceError, setServiceError] = useState('')
+    const [serviceLoading, setServiceLoading] = useState(false)
 
     useEffect(() => {
         if (token) {
@@ -22,6 +27,60 @@ export default function Dashboard() {
                 .catch(err => console.error(err))
         }
     }, [token])
+
+    const allowedServices = [
+        'Oil Change',
+        'Brake Inspection',
+        'Tire Rotation & Alignment',
+        'Full Vehicle Inspection',
+        'Air Filter Replacement',
+        'Brake Fluid Change',
+        'Battery Check',
+        'Wheel Alignment',
+        'Transmission Service',
+        'Coolant Flush',
+    ]
+
+    const getDateFromSelection = (selection: 1 | 2) => {
+        const now = new Date()
+        const target = new Date(now.getFullYear(), now.getMonth() + selection, 1)
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        return `${months[target.getMonth()]} ${target.getFullYear()}`
+    }
+
+    const getMonthLabel = (selection: 1 | 2) => {
+        const now = new Date()
+        const target = new Date(now.getFullYear(), now.getMonth() + selection, 1)
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        return `${months[target.getMonth()]} ${target.getFullYear()}`
+    }
+
+    const handleServiceRequest = async () => {
+        if (!selectedService) {
+            setServiceError('Please select a service')
+            return
+        }
+        if (!selectedDate) {
+            setServiceError('Please select a timeframe')
+            return
+        }
+
+        try {
+            setServiceLoading(true)
+            setServiceError('')
+            const date = getDateFromSelection(selectedDate)
+            await requestService(token!, selectedService, date)
+            const data = await getMaintenance(token!)
+            setMaintenanceList(data.maintenance)
+            setShowServiceForm(false)
+            setSelectedService('')
+            setSelectedDate(null)
+        } catch (err: any) {
+            setServiceError(err.message || 'Failed to request service')
+        } finally {
+            setServiceLoading(false)
+        }
+    }
 
     // Redirection to home page if not logged in
     useEffect(() => {
@@ -124,6 +183,67 @@ export default function Dashboard() {
                 <div className={activeTab === 'maintenance' ? styles.panelActive : styles.panel}>
                     <div className={styles.maintHeader}>
                         <p className={styles.maintTitle}>Service History</p>
+                        <div className={styles.requestBtnWrap}>
+                            <button
+                                className={styles.maintBtn}
+                                onClick={() => setShowServiceForm(!showServiceForm)}
+                            >
+                                {showServiceForm ? 'Cancel' : '+ Request Service'}
+                            </button>
+
+                            {showServiceForm && (
+                                <div className={styles.dropdown}>
+                                    <p className={styles.dropdownTitle}>Request a Service</p>
+
+                                    {serviceError && (
+                                        <p className={styles.serviceFormError}>{serviceError}</p>
+                                    )}
+
+                                    <label className={styles.dropdownLabel}>Service Type</label>
+                                    <select
+                                        className={styles.dropdownSelect}
+                                        value={selectedService}
+                                        onChange={e => {
+                                            setSelectedService(e.target.value)
+                                            setServiceError('')
+                                        }}
+                                    >
+                                        <option value="">Select a service...</option>
+                                        {allowedServices.map(service => (
+                                            <option key={service} value={service}>{service}</option>
+                                        ))}
+                                    </select>
+
+                                    <label className={styles.dropdownLabel}>Preferred Timeframe</label>
+                                    <div className={styles.dateButtons}>
+                                        <button
+                                            className={`${styles.dateBtn} ${selectedDate === 1 ? styles.dateBtnSelected : ''}`}
+                                            onClick={() => { setSelectedDate(1); setServiceError('') }}
+                                        >
+                                            Schedule Soon
+                                            <span className={styles.dateSubtext}>{getMonthLabel(1)}</span>
+                                        </button>
+                                        <button
+                                            className={`${styles.dateBtn} ${selectedDate === 2 ? styles.dateBtnSelected : ''}`}
+                                            onClick={() => { setSelectedDate(2); setServiceError('') }}
+                                        >
+                                            Schedule Later
+                                            <span className={styles.dateSubtext}>{getMonthLabel(2)}</span>
+                                        </button>
+                                    </div>
+
+                                    <div className={styles.dropdownDivider} />
+
+                                    <button
+                                        className={styles.dropdownSubmit}
+                                        onClick={handleServiceRequest}
+                                        disabled={serviceLoading}
+                                    >
+                                        {serviceLoading ? 'Submitting...' : 'Submit Request'}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className={styles.maintList}>
                         {maintenanceList.length === 0 ? (

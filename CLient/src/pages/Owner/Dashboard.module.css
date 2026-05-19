@@ -289,6 +289,156 @@
     color: #5C6A8A;
 }
 
+.requestBtnWrap {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 300px;
+    background: #0a0f1e;
+    border: 0.5px solid #1a2848;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 10;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    animation: fadeDown 0.2s ease;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #1e3a7a, #4869B0, #1e3a7a);
+    border-radius: 10px 10px 0 0;
+}
+
+.dropdownTitle {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.dropdownLabel {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #526BA1;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.dropdownSelect {
+    width: 100%;
+    background: #050810;
+    border: 0.5px solid #1a2848;
+    border-radius: 6px;
+    padding: 10px 14px;
+    color: #dde4f0;
+    font-size: 13px;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: border-color 0.3s;
+}
+
+.dropdownSelect:focus {
+    border-color: #4869B0;
+}
+
+.dateButtons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.dateBtn {
+    padding: 10px 8px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: #5C6A8A;
+    border: 0.5px solid #1a2848;
+    border-radius: 6px;
+    background: #050810;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dateBtn:hover {
+    border-color: #4869B0;
+    color: #8aaae0;
+}
+
+.dateBtnSelected {
+    border-color: #4869B0;
+    color: #8aaae0;
+    background: rgba(74, 105, 176, 0.1);
+}
+
+.dateSubtext {
+    font-size: 10px;
+    color: #3a4a70;
+}
+
+.dateBtnSelected .dateSubtext {
+    color: #526BA1;
+}
+
+.dropdownDivider {
+    height: 0.5px;
+    background: #0f1828;
+    margin-bottom: 16px;
+}
+
+.dropdownSubmit {
+    width: 100%;
+    background: #e8e4dc;
+    color: #080c12;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+}
+
+.dropdownSubmit:hover {
+    background: white;
+}
+
+.dropdownSubmit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .statusDone {
     font-size: 11px;
     padding: 4px 12px;
@@ -307,6 +457,31 @@
     color: #fbbf24;
     border: 0.5px solid rgba(251, 191, 36, 0.3);
     background: rgba(251, 191, 36, 0.05);
+}
+
+
+.serviceFormError {
+    font-size: 13px;
+    color: #f87171;
+    margin-bottom: 12px;
+}
+
+.serviceFormSelect:focus {
+    border-color: #4869B0;
+}
+
+
+.serviceFormInput:focus {
+    border-color: #4869B0;
+}
+
+.serviceFormSubmit:hover {
+    background: #ffffff;
+}
+
+.serviceFormSubmit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Floating Chat */

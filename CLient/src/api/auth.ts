@@ -50,3 +50,22 @@ export const getMaintenance = async (token: string) => {
 
     return data
 }
+
+export const requestService = async (token: string, serviceName: string, date: string) => {
+    const response = await fetch(`${API_URL}/owner/maintenance`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ serviceName, date }),
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+        throw new Error(data.error || 'Failed to request service')
+    }
+
+    return data
+}
