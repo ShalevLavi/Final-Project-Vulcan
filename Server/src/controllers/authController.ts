@@ -21,7 +21,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         }
 
         const owner = await Owner.findOne({
-            ownerName: ownerName.trim(),
+            ownerName: { $regex: new RegExp(`^${ownerName.trim()}$`, 'i') },
             vinLast4: vinLast4.toUpperCase(),
         }).populate('carId')
 
