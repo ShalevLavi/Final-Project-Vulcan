@@ -33,3 +33,20 @@ export const getOwnerCar = async (token: string) => {
     }
     return data;
 }
+
+export const getMaintenance = async (token: string) => {
+    const response = await fetch(`${API_URL}/owner/maintenance`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch maintenance data')
+    }
+
+    return data
+}

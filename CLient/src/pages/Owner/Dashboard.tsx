@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useModalStore } from '../../store/useModalStore'
 import styles from './Dashboard.module.css'
+import { getMaintenance } from '../../api/auth'
 
 export default function Dashboard() {
     const { token, owner, car, logout } = useModalStore()
@@ -12,8 +13,17 @@ export default function Dashboard() {
     const [messages, setMessages] = useState([
         { from: 'support', text: `Hello ${owner?.name || 'there'}! How can we help you with your ${car?.carModel || 'vehicle'} today?` },
     ])
+    const [maintenanceList, setMaintenanceList] = useState<any[]>([])
 
-    // Redirect if not logged in
+    useEffect(() => {
+        if (token) {
+            getMaintenance(token)
+                .then(data => setMaintenanceList(data.maintenance))
+                .catch(err => console.error(err))
+        }
+    }, [token])
+
+    // Redirection to home page if not logged in
     useEffect(() => {
         if (!token) {
             navigate('/')
@@ -116,20 +126,21 @@ export default function Dashboard() {
                         <p className={styles.maintTitle}>Service History</p>
                     </div>
                     <div className={styles.maintList}>
-                        <div className={styles.maintItem}>
-                            <div>
-                                <p className={styles.maintItemName}>Annual Service & Oil Change</p>
-                                <p className={styles.maintItemDate}>{owner.lastService}</p>
-                            </div>
-                            <span className={styles.statusDone}>Completed</span>
-                        </div>
-                        <div className={styles.maintItem}>
-                            <div>
-                                <p className={styles.maintItemName}>Upcoming Service</p>
-                                <p className={styles.maintItemDate}>Scheduled · {owner.nextService}</p>
-                            </div>
-                            <span className={styles.statusPending}>Upcoming</span>
-                        </div>
+                        {maintenanceList.length === 0 ? (
+                            <p style={{ color: '#5C6A8A', fontSize: '14px' }}>No service records found.</p>
+                        ) : (
+                            maintenanceList.map((item) => (
+                                <div key={item._id} className={styles.maintItem}>
+                                    <div>
+                                        <p className={styles.maintItemName}>{item.serviceName}</p>
+                                        <p className={styles.maintItemDate}>{item.date}</p>
+                                    </div>
+                                    <span className={item.status === 'completed' ? styles.statusDone : styles.statusPending}>
+                                        {item.status === 'completed' ? 'Completed' : item.status === 'upcoming' ? 'Upcoming' : 'Pending'}
+                                    </span>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
 
