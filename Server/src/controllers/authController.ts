@@ -41,6 +41,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             owner: {
                 name: owner.ownerName,
                 vinLast4: owner.vinLast4,
+                lastService: owner.lastService,
+                nextService: owner.nextService,
+                year: owner.year,
             },
             car: owner.carId,
         })

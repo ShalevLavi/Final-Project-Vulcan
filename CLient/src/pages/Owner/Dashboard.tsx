@@ -82,7 +82,7 @@ export default function Dashboard() {
                         {/* Right */}
                         <div className={styles.carRight}>
                             <div>
-                                <p className={styles.carYear}>{car.year}</p>
+                                <p className={styles.carYear}>{owner.year}</p>
                                 <h2 className={styles.carName}>
                                     Vulcan <span className={styles.carNameAccent}>{car.carModel}</span>
                                 </h2>
@@ -98,11 +98,11 @@ export default function Dashboard() {
                                 </div>
                                 <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Last Service</p>
-                                    <p className={styles.infoVal}>{car.lastService}</p>
+                                    <p className={styles.infoVal}>{owner.lastService}</p>
                                 </div>
                                 <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Next Service</p>
-                                    <p className={styles.infoVal}>{car.nextService}</p>
+                                    <p className={styles.infoVal}>{owner.nextService}</p>
                                 </div>
                             </div>
                         </div>
@@ -119,14 +119,14 @@ export default function Dashboard() {
                         <div className={styles.maintItem}>
                             <div>
                                 <p className={styles.maintItemName}>Annual Service & Oil Change</p>
-                                <p className={styles.maintItemDate}>{car.lastService}</p>
+                                <p className={styles.maintItemDate}>{owner.lastService}</p>
                             </div>
                             <span className={styles.statusDone}>Completed</span>
                         </div>
                         <div className={styles.maintItem}>
                             <div>
                                 <p className={styles.maintItemName}>Upcoming Service</p>
-                                <p className={styles.maintItemDate}>Scheduled · {car.nextService}</p>
+                                <p className={styles.maintItemDate}>Scheduled · {owner.nextService}</p>
                             </div>
                             <span className={styles.statusPending}>Upcoming</span>
                         </div>

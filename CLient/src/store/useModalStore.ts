@@ -3,18 +3,18 @@ import { create } from 'zustand'
 interface Owner {
     name: string
     vinLast4: string
+    lastService: string
+    nextService: string
+    year: number
 }
 
 interface Car {
     _id: string
     carModel: string
-    year: number
     color: string
     horsepower: number
     vin: string
     mileage: number
-    lastService: string
-    nextService: string
     carCollection: string
 }
 
