@@ -11,110 +11,124 @@ const seedDatabase = async () => {
         await mongoose.connect(process.env.MONGODB_URI as string)
         console.log('Connected to MongoDB')
 
+        await mongoose.connection.db?.collection('cars').dropIndexes()
+        console.log('Dropped car indexes')
+
         // Clear existing data
         await Car.deleteMany({})
         await Owner.deleteMany({})
+        await Maintenance.deleteMany({})
         console.log('Cleared existing data')
 
         // Create cars
         const zaurus = await Car.create({
             carModel: 'Zaurus',
-            color: 'Midnight Black',
-            horsepower: 520,
-            vin: 'VLCN2024X4K9',
-            mileage: 24500,
+            horsepower: 620,
+            engineSize: '5L V6 SuperCharged',
+            safetyLevel: 8,
             carCollection: 'offroad',
+            availableColors: ['Desert Sand', 'Olive Green', 'Gunmetal Grey', 'White', 'Black', 'Deep Metallic Blue'],
+            startingPrice: 1100000,
         })
 
         const orinex = await Car.create({
             carModel: 'Orinex',
-            color: 'Arctic White',
-            horsepower: 430,
-            vin: 'VLCN2024B3M7',
-            mileage: 12000,
+            horsepower: 560,
+            engineSize: '4L I6 Twin Turbo',
+            safetyLevel: 7,
             carCollection: 'offroad',
+            availableColors: ['Desert Sand', 'Olive Green', 'Gunmetal Grey', 'White', 'Black', 'Deep Metallic Blue'],
+            startingPrice: 900000,
         })
 
         const grenyx = await Car.create({
             carModel: 'Grenyx',
-            color: 'Midnight Blue',
-            horsepower: 390,
-            vin: 'VLCN2024C5P2',
-            mileage: 8000,
+            horsepower: 820,
+            engineSize: '5L V10 Twin Turbo',
+            safetyLevel: 7,
             carCollection: 'luxury',
+            availableColors: ['Pearl White', 'Deep Black Metallic', 'Champagne Silver', 'Deep Metallic Blue'],
+            startingPrice: 2300000,
         })
 
         const evion = await Car.create({
             carModel: 'Evion',
-            color: 'Phantom Grey',
-            horsepower: 450,
-            vin: 'VLCN2024D7R4',
-            mileage: 15000,
+            horsepower: 750,
+            engineSize: '6L V12 Twin Turbo',
+            safetyLevel: 8,
             carCollection: 'luxury',
+            availableColors: ['Pearl White', 'Deep Black Metallic', 'Champagne Silver', 'Deep Metallic Blue'],
+            startingPrice: 3500000,
         })
 
         const umbrix = await Car.create({
             carModel: 'Umbrix',
-            color: 'Carbon Black',
-            horsepower: 600,
-            vin: 'VLCN2024E9T6',
-            mileage: 5000,
+            horsepower: 1555,
+            engineSize: '8L W16 Quad Turbo',
+            safetyLevel: 8,
             carCollection: 'luxury',
+            availableColors: ['Pearl White', 'Deep Black Metallic', 'Champagne Silver', 'Deep Metallic Blue'],
+            startingPrice: 25000000,
         })
 
         // Create owners
         await Owner.create({
             ownerName: 'Shalev Lavi',
-            vinLast4: 'X4K9',
-            carId: zaurus._id,
+            vin: '1FTFW1EF9BKD5X4K9',
+            carId: umbrix._id,
             year: 2023,
+            mileage: 2230,
             lastService: 'Apr 2024',
-            nextService: 'Oct 2027',
+            carColor: 'Deep Black Metallic',
         })
 
         await Owner.create({
             ownerName: 'Nataly Demasov',
-            vinLast4: 'B3M7',
+            vin: '3GTEC13C88G29B3M7',
             carId: orinex._id,
             year: 2024,
+            mileage: 5560,
             lastService: 'Jan 2025',
-            nextService: 'Jul 2028',
+            carColor: 'Desert Sand',
         })
 
         await Owner.create({
             ownerName: 'Hen Naim',
-            vinLast4: 'C5P2',
+            vin: '1G6DA1E31C017C5P2',
             carId: grenyx._id,
             year: 2026,
+            mileage: 250,
             lastService: 'May 2026',
-            nextService: 'Nov 2029',
+            carColor: 'Pearl White',
         })
 
         await Owner.create({
             ownerName: 'Ariel Shushan',
-            vinLast4: 'D7R4',
+            vin: '1FM5K8D81DGA0D7R4',
             carId: evion._id,
             year: 2025,
+            mileage: 1500,
             lastService: 'Apr 2026',
-            nextService: 'Oct 2029',
+            carColor: 'Champagne Silver',
         })
 
         await Owner.create({
             ownerName: 'Lior Levi',
-            vinLast4: 'E9T6',
-            carId: umbrix._id,
+            vin: '3CZRE4H51BG77E9T6',
+            carId: zaurus._id,
             year: 2025,
+            mileage: 1250,
             lastService: 'Jun 2025',
-            nextService: 'Dec 2028',
+            carColor: 'Gunmetal Grey',
         })
 
         await Maintenance.deleteMany({})
 
-        const shalevOwner = await Owner.findOne({ vinLast4: 'X4K9' })
-        const natalyOwner = await Owner.findOne({ vinLast4: 'B3M7' })
-        const henOwner = await Owner.findOne({ vinLast4: 'C5P2' })
-        const arielOwner = await Owner.findOne({ vinLast4: 'D7R4' })
-        const liorOwner = await Owner.findOne({ vinLast4: 'E9T6' })
+        const shalevOwner = await Owner.findOne({ vin: '1FTFW1EF9BKD5X4K9' })
+        const natalyOwner = await Owner.findOne({ vin: '3GTEC13C88G29B3M7' })
+        const henOwner = await Owner.findOne({ vin: '1G6DA1E31C017C5P2' })
+        const arielOwner = await Owner.findOne({ vin: '1FM5K8D81DGA0D7R4' })
+        const liorOwner = await Owner.findOne({ vin: '3CZRE4H51BG77E9T6' })
 
         await Maintenance.create([
             { ownerId: shalevOwner?._id, serviceName: 'Annual Service & Oil Change', date: 'Jan 2024', status: 'completed' },
@@ -146,11 +160,11 @@ const seedDatabase = async () => {
 
         console.log('Database seeded successfully!')
         console.log('Test owners:')
-        console.log('  Shalev Lavi — VIN: X4K9 (Zaurus)')
-        console.log('  Nataly Demasov — VIN: B3M7 (Orinex)')
-        console.log('  Hen Naim — VIN: C5P2 (Grenyx)')
-        console.log('  Ariel Shushan — VIN: D7R4 (Evion)')
-        console.log('  Lior Levi — VIN: E9T6 (Umbrix)')
+        console.log('  Shalev Lavi — VIN last 4: X4K9 (Umbrix)')
+        console.log('  Nataly Demasov — VIN last 4: B3M7 (Orinex)')
+        console.log('  Hen Naim — VIN last 4: C5P2 (Grenyx)')
+        console.log('  Ariel Shushan — VIN last 4: D7R4 (Evion)')
+        console.log('  Lior Levi — VIN last 4: E9T6 (Zaurus)')
 
         process.exit(0)
     } catch (error) {

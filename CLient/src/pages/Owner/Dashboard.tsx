@@ -198,19 +198,27 @@ export default function Dashboard() {
                             <div className={styles.infoGrid}>
                                 <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Color</p>
-                                    <p className={styles.infoVal}>{car.color}</p>
+                                    <p className={styles.infoVal}>{owner.carColor}</p>
                                 </div>
                                 <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Horsepower</p>
                                     <p className={styles.infoVal}>{car.horsepower} HP</p>
                                 </div>
                                 <div className={styles.infoCard}>
+                                    <p className={styles.infoLabel}>Mileage</p>
+                                    <p className={styles.infoVal}>{owner.mileage.toLocaleString()} km</p>
+                                </div>
+                                <div className={styles.infoCard}>
                                     <p className={styles.infoLabel}>Last Service</p>
                                     <p className={styles.infoVal}>{owner.lastService}</p>
                                 </div>
                                 <div className={styles.infoCard}>
-                                    <p className={styles.infoLabel}>Next Service</p>
-                                    <p className={styles.infoVal}>{owner.nextService}</p>
+                                    <p className={styles.infoLabel}>Engine</p>
+                                    <p className={styles.infoVal}>{car.engineSize}</p>
+                                </div>
+                                <div className={styles.infoCard}>
+                                    <p className={styles.infoLabel}>Safety Rating</p>
+                                    <p className={styles.infoVal}>{car.safetyLevel} / 8</p>
                                 </div>
                             </div>
                         </div>

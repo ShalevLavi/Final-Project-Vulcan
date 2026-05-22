@@ -14,12 +14,14 @@ export const getCar = async (req: AuthRequest, res: Response): Promise<void> => 
 
         res.status(200).json({
             owner: {
-                _id: owner._id,
-                name: owner.ownerName,
-                vinLast4: owner.vinLast4,
-                lastService: owner.lastService,
-                nextService: owner.nextService,
-                year: owner.year,
+        _id: owner._id,
+        name: owner.ownerName,
+        vin: owner.vin,
+        vinLast4: owner.vin.slice(-4),
+        year: owner.year,
+        mileage: owner.mileage,
+        lastService: owner.lastService,
+        carColor: owner.carColor,
             },
             car: owner.carId,
         })

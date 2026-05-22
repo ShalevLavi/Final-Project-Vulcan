@@ -21,8 +21,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         }
 
         const owner = await Owner.findOne({
-            ownerName: { $regex: new RegExp(`^${ownerName.trim()}$`, 'i') },
-            vinLast4: vinLast4.toUpperCase(),
+        ownerName: { $regex: new RegExp(`^${ownerName.trim()}$`, 'i') },
+        vin: { $regex: new RegExp(`${vinLast4.toUpperCase()}$`) },
         }).populate('carId')
 
         if (!owner) {
@@ -37,16 +37,18 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         )
 
         res.status(200).json({
-            token,
-            owner: {
-                _id: owner._id,
-                name: owner.ownerName,
-                vinLast4: owner.vinLast4,
-                lastService: owner.lastService,
-                nextService: owner.nextService,
-                year: owner.year,
-            },
-            car: owner.carId,
+        token,
+        owner: {
+            _id: owner._id,
+            name: owner.ownerName,
+            vin: owner.vin,
+            vinLast4: owner.vin.slice(-4),
+            year: owner.year,
+            mileage: owner.mileage,
+            lastService: owner.lastService,
+            carColor: owner.carColor,
+        },
+        car: owner.carId,
         })
 
     } catch (error) {

@@ -3,20 +3,23 @@ import { create } from 'zustand'
 interface Owner {
     _id: string
     name: string
+    vin: string
     vinLast4: string
-    lastService: string
-    nextService: string
     year: number
+    mileage: number
+    lastService: string
+    carColor: string
 }
 
 interface Car {
     _id: string
     carModel: string
-    color: string
     horsepower: number
-    vin: string
-    mileage: number
+    engineSize: string
+    safetyLevel: number
     carCollection: string
+    availableColors: string[]
+    startingPrice: number
 }
 
 interface ModalStore {
