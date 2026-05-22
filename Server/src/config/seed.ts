@@ -11,7 +11,7 @@ const seedDatabase = async () => {
         await mongoose.connect(process.env.MONGODB_URI as string)
         console.log('Connected to MongoDB')
 
-        await mongoose.connection.db?.collection('cars').dropIndexes()
+        await mongoose.connection.useDb('vulcan').collection('cars').dropIndexes()
         console.log('Dropped car indexes')
 
         // Clear existing data
@@ -70,6 +70,9 @@ const seedDatabase = async () => {
             availableColors: ['Pearl White', 'Deep Black Metallic', 'Champagne Silver', 'Deep Metallic Blue'],
             startingPrice: 25000000,
         })
+        
+        const carCount = await Car.countDocuments()
+        console.log(`Cars created: ${carCount}`)
 
         // Create owners
         await Owner.create({
