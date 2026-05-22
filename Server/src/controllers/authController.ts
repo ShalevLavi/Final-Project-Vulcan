@@ -39,6 +39,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         res.status(200).json({
             token,
             owner: {
+                _id: owner._id,
                 name: owner.ownerName,
                 vinLast4: owner.vinLast4,
                 lastService: owner.lastService,

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
 interface Owner {
+    _id: string
     name: string
     vinLast4: string
     lastService: string

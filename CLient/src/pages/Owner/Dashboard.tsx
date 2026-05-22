@@ -1,8 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useModalStore } from '../../store/useModalStore'
 import styles from './Dashboard.module.css'
 import { getMaintenance, requestService } from '../../api/auth'
+import { connectSocket, disconnectSocket } from '../../api/socket'
+
+interface MaintenanceItem {
+        _id: string
+        serviceName: string
+        date: string
+        status: 'completed' | 'upcoming' | 'pending'
+    }
 
 export default function Dashboard() {
     const { token, owner, car, logout } = useModalStore()
@@ -10,15 +18,42 @@ export default function Dashboard() {
     const [activeTab, setActiveTab] = useState<'details' | 'maintenance'>('details')
     const [chatOpen, setChatOpen] = useState(false)
     const [message, setMessage] = useState('')
-    const [messages, setMessages] = useState([
+    const [messages, setMessages] = useState<{ from: string, text: string }[]>([
         { from: 'support', text: `Hello ${owner?.name || 'there'}! How can we help you with your ${car?.carModel || 'vehicle'} today?` },
     ])
-    const [maintenanceList, setMaintenanceList] = useState<any[]>([])
+    const [maintenanceList, setMaintenanceList] = useState<MaintenanceItem[]>([])
     const [showServiceForm, setShowServiceForm] = useState(false)
     const [selectedService, setSelectedService] = useState('')
     const [selectedDate, setSelectedDate] = useState<1 | 2 | null>(null)
     const [serviceError, setServiceError] = useState('')
     const [serviceLoading, setServiceLoading] = useState(false)
+
+    const socketRef = useRef<ReturnType<typeof connectSocket> | null>(null)
+
+    useEffect(() => {
+        if (!token || !owner || !car) return
+
+        const socket = connectSocket()
+        socketRef.current = socket
+
+        // Join the owner's private room
+        socket.emit('joinRoom', owner._id)
+
+        // Listen for incoming messages
+        socket.on('receiveMessage', (message: { from: string, text: string }) => {
+            setMessages(prev => [...prev, message])
+        })
+
+        return () => {
+            socket.off('receiveMessage')
+        }
+        }, [token, owner, car])
+
+        useEffect(() => {
+        return () => {
+            disconnectSocket()
+        }
+    }, [])
 
     useEffect(() => {
         if (token) {
@@ -75,7 +110,7 @@ export default function Dashboard() {
             setShowServiceForm(false)
             setSelectedService('')
             setSelectedDate(null)
-        } catch (err: any) {
+        } catch (err) {
             setServiceError(err.message || 'Failed to request service')
         } finally {
             setServiceLoading(false)
@@ -90,12 +125,16 @@ export default function Dashboard() {
     }, [token, navigate])
 
     const sendMessage = () => {
-        if (!message.trim()) return
-        setMessages(prev => [...prev, { from: 'owner', text: message }])
+        if (!message.trim() || !socketRef.current || !owner || !car) return
+
+        socketRef.current.emit('sendMessage', {
+            ownerId: owner._id,
+            text: message,
+            from: 'owner',
+            carModel: car.carModel,
+            ownerName: owner.name,
+        })
         setMessage('')
-        setTimeout(() => {
-            setMessages(prev => [...prev, { from: 'support', text: 'Thanks for your message! A Vulcan specialist will be with you shortly.' }])
-        }, 1000)
     }
 
     if (!token || !car || !owner) return null
