@@ -41,8 +41,8 @@ export default function LoginModal() {
 
             navigate('/dashboard')
 
-        } catch (err: any) {
-            setError(err.message || 'Invalid name or VIN')
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Invalid name or VIN')
         } finally {
             setLoading(false)
         }
@@ -91,12 +91,12 @@ export default function LoginModal() {
 
                     {/* Name field */}
                     <div className="mb-5">
-                        <label className="block text-[11px] tracking-[0.25em] text-[#526BA1] uppercase mb-2">
+                        <label htmlFor="ownerName"className="block text-[11px] tracking-[0.25em] text-[#526BA1] uppercase mb-2">
                             Full Name
                         </label>
                         <input
+                            id="ownerName"
                             type="text"
-                            placeholder="e.g. Shalev Lavi"
                             value={name}
                             onChange={e => {
                                 setName(e.target.value)
@@ -108,12 +108,12 @@ export default function LoginModal() {
 
                     {/*VIN field*/}
                     <div className="mb-8">
-                        <label className="block text-[11px] tracking-[0.25em] text-[#526BA1] uppercase mb-2">
-                            Last 4 VIN Digits
+                        <label htmlFor="vinInput" className="block text-[11px] tracking-[0.25em] text-[#526BA1] uppercase mb-2">
+                            Last 4 Digits of VIN
                         </label>
                         <input
+                            id="vinInput"
                             type="text"
-                            placeholder="X4K9"
                             value={vin}
                             maxLength={4}
                             onChange={e => {
