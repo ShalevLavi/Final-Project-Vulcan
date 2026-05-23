@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import connectDB from './config/db'
 import authRoutes from './routes/authRoutes'
 import ownerRoutes from './routes/ownerRoutes'
+import carRoutes from './routes/carRoutes'
 import './models/Car'
 import './models/Owner'
 import maintenanceRoutes from './routes/maintenanceRoutes'
@@ -31,6 +32,7 @@ app.use(express.json())
 app.use('/api/auth', authRoutes)
 app.use('/api/owner', ownerRoutes)
 app.use('/api/owner/maintenance', maintenanceRoutes)
+app.use('/api/cars', carRoutes)
 
 app.get('/', (req, res) => {
     res.json({ message: 'Vulcan API is running' })

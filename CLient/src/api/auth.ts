@@ -69,3 +69,14 @@ export const requestService = async (token: string, serviceName: string, date: s
 
     return data
 }
+
+export const getCars = async () => {
+  const response = await fetch(`${API_URL}/cars`)
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new Error(data.error || 'Failed to fetch cars')
+  }
+
+  return data
+}

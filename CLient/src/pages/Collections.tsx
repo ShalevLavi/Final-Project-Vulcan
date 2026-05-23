@@ -1,114 +1,58 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getCars } from '../api/auth'
 import { useLocation } from 'react-router-dom'
 import styles from './Collections.module.css'
 
-const offRoadCars = [
-    {
-        num: '01',
-        tag: 'Off-Road · 01',
-        name: 'Vulcan Zaurus',
-        tagline: 'The apex predator. Engineered without compromise.',
-        desc: 'Zaurus was built for those who refuse to be stopped by terrain. From granite ridges to flooded riverbeds, it combines raw mechanical dominance with intelligent all-terrain systems — delivering control where other vehicles simply give up.',
-        specs: [
-            { val: '520hp', label: 'Power' },
-            { val: '4.1s', label: '0-60' },
-            { val: '14"', label: 'Clearance' },
-            { val: 'AWD', label: 'Drive' },
-        ],
-        highlights: [
-            'Locking front and rear differentials for maximum traction on any surface',
-            'Adaptive terrain suspension with 4 programmable off-road drive modes',
-            'Full underbody skid plate protection and reinforced rock rails',
-        ],
-        features: ['Locking Diff', 'Rock Mode', 'Skid Plates', 'Terrain AI'],
-    },
-    {
-        num: '02',
-        tag: 'Off-Road · 02',
-        name: 'Vulcan Orinex',
-        tagline: 'Agile. Capable. Unrestrained.',
-        desc: 'Orinex is the everyday off-roader — lighter and more agile than the Zaurus, yet equally uncompromising in its capability. Designed for those who need serious off-road performance without sacrificing daily refinement and comfort.',
-        specs: [
-            { val: '430hp', label: 'Power' },
-            { val: '4.8s', label: '0-60' },
-            { val: '11"', label: 'Clearance' },
-            { val: '4WD', label: 'Drive' },
-        ],
-        highlights: [
-            'Intelligent terrain AI that automatically adapts to Sand, Mud, Snow and Rock',
-            'Lightweight composite body panels for improved agility off the beaten track',
-            'Premium cabin insulation — refined comfort after the roughest of drives',
-        ],
-        features: ['Sand Mode', 'Mud Mode', 'Terrain AI', 'Composite Body'],
-    },
-]
-
-const luxuryCars = [
-    {
-        num: '01',
-        tag: 'Luxury · 01',
-        name: 'Vulcan Grenyx',
-        tagline: 'Understated power. Effortless presence.',
-        desc: 'Grenyx is the entry point into the Vulcan luxury experience — and it sets the bar extraordinarily high. It delivers a seamless blend of performance and everyday comfort, wrapped in a design that speaks quietly but commands every room it enters.',
-        specs: [
-            { val: '890hp', label: 'Power' },
-            { val: '2.3s', label: '0-60' },
-            { val: 'Coilover', label: 'Suspension' },
-            { val: 'RWD', label: 'Drive' },
-        ],
-        highlights: [
-            'Full-grain leather interior with contrast stitching and ambient lighting',
-            'Adaptive Coilover suspension that reads the road 500 times per second',
-            'Vulcan Drive Assist — intelligent cruise, lane keeping and auto parking',
-        ],
-        features: ['Leather Interior', 'Coilover Suspension', 'Drive Assist'],
-    },
-    {
-        num: '02',
-        tag: 'Luxury · 02',
-        name: 'Vulcan Evion',
-        tagline: 'Long distances. Absolute silence.',
-        desc: "Evion is Vulcan's grand tourer. Designed for those who travel far and arrive perfectly composed — its noise-cancelling cabin architecture and long-range powertrain make every journey feel effortless, no matter the distance.",
-        specs: [
-            { val: '670hp', label: 'Power' },
-            { val: '3.2s', label: '0-60' },
-            { val: 'Air', label: 'Suspension' },
-            { val: 'AWD', label: 'Drive' },
-        ],
-        highlights: [
-            'Noise-cancelling cabin architecture for a near-silent driving experience',
-            '24-speaker Vulcan Reference audio system tuned by acoustic engineers',
-            'Extended range powertrain — engineered for the long haul',
-        ],
-        features: ['Noise Cancelling', '24-Speaker Audio', 'Extended Range'],
-    },
-    {
-        num: '03',
-        tag: 'Luxury · 03',
-        name: 'Vulcan Umbrix',
-        tagline: 'The pinnacle. Hand-assembled. Bespoke.',
-        desc: 'Umbrix sits at the very top of the Vulcan lineup. Every unit is hand-assembled by master craftsmen, with bespoke interior options and a powertrain that redefines what a luxury vehicle can do. This is not a car — it is a commission.',
-        specs: [
-            { val: '590hp', label: 'Power' },
-            { val: '4.6s', label: '0-60' },
-            { val: 'Air', label: 'Suspension' },
-            { val: 'AWD', label: 'Drive' },
-        ],
-        highlights: [
-            'Hand-assembled by master craftsmen — no two Umbrix vehicles are alike',
-            'Fully bespoke interior program — materials, colors and layouts on request',
-            'Active aerodynamics and carbon ceramic braking system as standard',
-        ],
-        features: ['Hand Assembled', 'Bespoke Interior', 'Limited Edition', 'Carbon Ceramic'],
-    },
-]
+interface CarData {
+  _id: string
+  carModel: string
+  horsepower: number
+  engineSize: string
+  safetyLevel: number
+  carCollection: string
+  availableColors: string[]
+  startingPrice: number
+}
 
 export default function Collections() {
     const location = useLocation()
     const initialTab = (location.state as { tab?: string })?.tab === 'luxury' ? 'luxury' : 'offroad'
     const [activeTab, setActiveTab] = useState<'offroad' | 'luxury'>(initialTab)
+    const [offRoadCars, setOffRoadCars] = useState<CarData[]>([])
+    const [luxuryCars, setLuxuryCars] = useState<CarData[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        getCars()
+            .then(data => {
+            setOffRoadCars(data.cars.filter((c: CarData) => c.carCollection === 'offroad'))
+            setLuxuryCars(data.cars.filter((c: CarData) => c.carCollection === 'luxury'))
+            setLoading(false)
+            })
+            .catch(err => {
+            console.error(err)
+            setLoading(false)
+            })
+    }, [])
 
     const cars = activeTab === 'offroad' ? offRoadCars : luxuryCars
+
+    if (loading) return (
+        <main className={styles.page}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#526BA1', fontSize: '14px', letterSpacing: '0.2em' }}>
+            LOADING...
+            </div>
+        </main>
+    )
+
+    const formatPrice = (price: number): string => {
+        if (price >= 1000000) {
+            const millions = price / 1000000
+            return `₪${millions % 1 === 0 ? millions : millions.toFixed(1)}M`
+        } else {
+            return `₪${(price / 1000).toFixed(0)}K`
+        }
+    }
 
     return (
         <main className={styles.page}>
@@ -144,44 +88,52 @@ export default function Collections() {
                 {/* Cards */}
                 <div className={styles.cardList}>
                     {cars.map((car) => (
-                        <div key={car.name} className={styles.card}>
+                        <div key={car._id} className={styles.card}>
 
                             {/* Image */}
                             <div className={`${styles.cardImg} ${activeTab === 'offroad' ? styles.cardImgOffroad : styles.cardImgLuxury}`}>
-                                <span className={styles.cardImgLabel}>{car.name}</span>
-                                <span className={styles.cardImgNum}>{car.num}</span>
+                                <span className={styles.cardImgLabel}>{car.carModel}</span>
+                                <span className={styles.cardImgNum}>{cars.indexOf(car) + 1 < 10 ? `0${cars.indexOf(car) + 1}` : cars.indexOf(car) + 1}</span>
                                 <span className={styles.cardImgPlaceholder}>Vehicle Image</span>
                             </div>
 
                             {/* Info */}
                             <div className={styles.cardInfo}>
                                 <div>
-                                    <p className={styles.cardTag}>{car.tag}</p>
-                                    <h2 className={styles.cardName}>{car.name}</h2>
-                                    <p className={styles.cardTagline}>{car.tagline}</p>
-                                    <p className={styles.cardDesc}>{car.desc}</p>
+                                    <p className={styles.cardTag}>{activeTab === 'offroad' ? 'Off-Road' : 'Luxury'} · 0{cars.indexOf(car) + 1}</p>
+                                    <h2 className={styles.cardName}>Vulcan {car.carModel}</h2>
+                                    <p className={styles.cardTagline}>{car.engineSize}</p>
+                                    <p className={styles.cardDesc}>
+                                        {activeTab === 'offroad'
+                                            ? `Built to handle extremes with confidence and control. The ${car.carModel} combines raw mechanical dominance with intelligent all-terrain systems.`
+                                            : `Where the future meets refinement. The ${car.carModel} redefines what it means to travel — every detail crafted for those who demand the extraordinary.`
+                                        }
+                                    </p>
 
                                     <div className={styles.divider} />
 
                                     {/* Specs */}
                                     <div className={styles.specs}>
-                                        {car.specs.map(({ val, label }) => (
-                                            <div key={label} className={styles.spec}>
-                                                <p className={styles.specVal}>{val}</p>
-                                                <p className={styles.specLabel}>{label}</p>
-                                            </div>
-                                        ))}
+                                        <div className={styles.spec}>
+                                            <p className={styles.specVal}>{car.horsepower}hp</p>
+                                            <p className={styles.specLabel}>Power</p>
+                                        </div>
+                                        <div className={styles.spec}>
+                                            <p className={styles.specVal}>{car.safetyLevel}/8</p>
+                                            <p className={styles.specLabel}>Safety</p>
+                                        </div>
+                                        <div className={styles.spec}>
+                                            <p className={styles.specVal}>{formatPrice(car.startingPrice)}</p>
+                                            <p className={styles.specLabel}>Starting Price</p>
+                                        </div>
                                     </div>
 
                                     {/* Highlights */}
                                     <div className={styles.highlights}>
-                                        <p className={styles.highlightsTitle}>Key Highlights</p>
-                                        <div className={styles.highlightList}>
-                                            {car.highlights.map((h, i) => (
-                                                <div key={i} className={styles.highlight}>
-                                                    <div className={styles.dot} />
-                                                    <p className={styles.highlightText}>{h}</p>
-                                                </div>
+                                        <p className={styles.highlightsTitle}>Available Colors</p>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+                                            {car.availableColors.map((color: string) => (
+                                            <span key={color} className={styles.featureTag}>{color}</span>
                                             ))}
                                         </div>
                                     </div>
@@ -190,14 +142,12 @@ export default function Collections() {
                                 {/* Bottom */}
                                 <div className={styles.cardBottom}>
                                     <div className={styles.featureTags}>
-                                        {car.features.map((f) => (
-                                            <span key={f} className={styles.featureTag}>{f}</span>
-                                        ))}
+                                        <span className={styles.featureTag}>{car.engineSize}</span>
+                                        <span className={styles.featureTag}>Safety {car.safetyLevel}/8</span>
                                     </div>
-                                    <button className={styles.cta}>Configure →</button>
+                                        <button className={styles.cta}>Configure →</button>
                                 </div>
                             </div>
-
                         </div>
                     ))}
                 </div>
