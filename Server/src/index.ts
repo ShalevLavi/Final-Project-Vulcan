@@ -99,8 +99,10 @@ io.on('connection', (socket) => {
   })
 })
 
-httpServer.listen(PORT, () => {
+if (process.env.NODE_ENV !== 'test') {
+  httpServer.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-})
+  })
+}
 
 export default app

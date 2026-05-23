@@ -3,4 +3,9 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/__tests__/**/*.test.ts'],
   setupFiles: ['dotenv/config'],
+  testEnvironmentOptions: {
+    env: {
+      NODE_ENV: 'test'
+    }
+  }
 }
