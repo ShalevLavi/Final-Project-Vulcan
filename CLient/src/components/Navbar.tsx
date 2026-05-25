@@ -21,7 +21,7 @@ export default function Navbar() {
                 {/* Logo */}
                 <Link to="/">
                     <img
-                        src="/src/assets/VULCAN - LOGO .png"
+                        src="/VULCAN - LOGO .png"
                         alt="Vulcan"
                         className="h-8 w-auto transition-all duration-300 hover:h-9 hover:-translate-x-1"
                     />
