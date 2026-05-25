@@ -16,22 +16,23 @@ import rateLimit from 'express-rate-limit'
 
 dotenv.config()
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL,
+].filter(Boolean) as string[]
+
 const app = express()
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
     cors: {
-        origin: 'http://localhost:5173',
-        methods: ['GET', 'POST']
+        origin: allowedOrigins,
+        methods: ['GET', 'POST'],
+        credentials: true,
     }
 })
 const PORT = process.env.PORT || 5000
 
 connectDB()
-
-const allowedOrigins = [
-  'http://localhost:5173',
-  process.env.FRONTEND_URL || 'https://vulcan-motors.vercel.app',
-]
 
 app.use(helmet())
 app.use(cors({
