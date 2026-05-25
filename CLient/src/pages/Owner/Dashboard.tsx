@@ -111,7 +111,7 @@ export default function Dashboard() {
             setSelectedService('')
             setSelectedDate(null)
         } catch (err) {
-            setServiceError(err.message || 'Failed to request service')
+            setServiceError(err instanceof Error ? err.message : 'Failed to request service')
         } finally {
             setServiceLoading(false)
         }
