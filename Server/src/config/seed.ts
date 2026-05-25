@@ -29,6 +29,7 @@ const seedDatabase = async () => {
             carCollection: 'offroad',
             availableColors: ['Desert Sand', 'Olive Green', 'Gunmetal Grey', 'White', 'Black', 'Deep Metallic Blue'],
             startingPrice: 1100000,
+            image: '/Cars/Zaurus.png'
         })
 
         const orinex = await Car.create({
@@ -39,6 +40,7 @@ const seedDatabase = async () => {
             carCollection: 'offroad',
             availableColors: ['Desert Sand', 'Olive Green', 'Gunmetal Grey', 'White', 'Black', 'Deep Metallic Blue'],
             startingPrice: 900000,
+            image: '/Cars/Orinex.png'
         })
 
         const grenyx = await Car.create({
@@ -49,6 +51,7 @@ const seedDatabase = async () => {
             carCollection: 'luxury',
             availableColors: ['Pearl White', 'Deep Black Metallic', 'Champagne Silver', 'Deep Metallic Blue'],
             startingPrice: 2300000,
+            image: '/Cars/Grenyx.png'
         })
 
         const evion = await Car.create({
@@ -59,6 +62,7 @@ const seedDatabase = async () => {
             carCollection: 'luxury',
             availableColors: ['Pearl White', 'Deep Black Metallic', 'Champagne Silver', 'Deep Metallic Blue'],
             startingPrice: 3500000,
+            image: '/Cars/Evion.png'
         })
 
         const umbrix = await Car.create({
@@ -69,6 +73,7 @@ const seedDatabase = async () => {
             carCollection: 'luxury',
             availableColors: ['Pearl White', 'Deep Black Metallic', 'Champagne Silver', 'Deep Metallic Blue'],
             startingPrice: 25000000,
+            image: '/Cars/Umbrix.png'
         })
         
         const carCount = await Car.countDocuments()

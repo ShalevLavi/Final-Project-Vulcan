@@ -12,6 +12,7 @@ interface CarData {
   carCollection: string
   availableColors: string[]
   startingPrice: number
+  image: string
 }
 
 export default function Collections() {
@@ -91,10 +92,16 @@ export default function Collections() {
                         <div key={car._id} className={styles.card}>
 
                             {/* Image */}
-                            <div className={`${styles.cardImg} ${activeTab === 'offroad' ? styles.cardImgOffroad : styles.cardImgLuxury}`}>
+                            <div className={styles.cardImg}>
+                                <img 
+                                    src={car.image} 
+                                    alt={car.carModel}
+                                    className={styles.cardImgPhoto}
+                                />
                                 <span className={styles.cardImgLabel}>{car.carModel}</span>
-                                <span className={styles.cardImgNum}>{cars.indexOf(car) + 1 < 10 ? `0${cars.indexOf(car) + 1}` : cars.indexOf(car) + 1}</span>
-                                <span className={styles.cardImgPlaceholder}>Vehicle Image</span>
+                                <span className={styles.cardImgNum}>
+                                    {cars.indexOf(car) + 1 < 10 ? `0${cars.indexOf(car) + 1}` : cars.indexOf(car) + 1}
+                                </span>
                             </div>
 
                             {/* Info */}

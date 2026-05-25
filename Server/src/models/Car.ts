@@ -8,6 +8,7 @@ export interface ICar extends Document {
   carCollection: 'offroad' | 'luxury'
   availableColors: string[]
   startingPrice: number
+  image: string
 }
 
 const CarSchema = new Schema<ICar>({
@@ -18,6 +19,7 @@ const CarSchema = new Schema<ICar>({
   carCollection: { type: String, enum: ['offroad', 'luxury'], required: true },
   availableColors: [{ type: String }],
   startingPrice: { type: Number, required: true },
+  image: { type: String, required: true },
 }, { timestamps: true })
 
 export default mongoose.model<ICar>('Car', CarSchema)

@@ -20,6 +20,7 @@ interface Car {
     carCollection: string
     availableColors: string[]
     startingPrice: number
+    image: string
 }
 
 interface ModalStore {

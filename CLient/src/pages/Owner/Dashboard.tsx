@@ -184,7 +184,7 @@ export default function Dashboard() {
 
                         {/* Image */}
                         <div className={styles.carImg}>
-                            <span className={styles.carImgPlaceholder}>Vehicle Image</span>
+                            <img src={car.image} alt={car.carModel} className={styles.carImgPhoto} />
                         </div>
 
                         {/* Right */}
