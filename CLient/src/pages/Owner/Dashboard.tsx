@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useModalStore } from '../../store/useModalStore'
 import styles from './Dashboard.module.css'
-import { getMaintenance, requestService } from '../../api/auth'
+import { getMaintenance, requestService, deleteMaintenance } from '../../api/auth'
 import { connectSocket, disconnectSocket } from '../../api/socket'
 
 interface MaintenanceItem {
@@ -117,7 +117,16 @@ export default function Dashboard() {
         }
     }
 
-    // Redirection to home page if not logged in
+    const handleDeleteMaintenance = async (id: string) => {
+        try {
+            await deleteMaintenance(token!, id)
+            const data = await getMaintenance(token!)
+            setMaintenanceList(data.maintenance)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     useEffect(() => {
         if (!token) {
             navigate('/')
@@ -302,9 +311,19 @@ export default function Dashboard() {
                                         <p className={styles.maintItemName}>{item.serviceName}</p>
                                         <p className={styles.maintItemDate}>{item.date}</p>
                                     </div>
-                                    <span className={item.status === 'completed' ? styles.statusDone : styles.statusPending}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <span className={item.status === 'completed' ? styles.statusDone : styles.statusPending}>
                                         {item.status === 'completed' ? 'Completed' : item.status === 'upcoming' ? 'Upcoming' : 'Pending'}
-                                    </span>
+                                        </span>
+                                        {item.status === 'pending' && (
+                                        <button
+                                            onClick={() => handleDeleteMaintenance(item._id)}
+                                            className={styles.deleteBtn}
+                                        >
+                                            ✕
+                                        </button>
+                                        )}
+                                    </div>
                                 </div>
                             ))
                         )}

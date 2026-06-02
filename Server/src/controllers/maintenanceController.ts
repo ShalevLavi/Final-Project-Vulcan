@@ -55,3 +55,31 @@ export const requestMaintenance = async (req: AuthRequest, res: Response): Promi
         res.status(500).json({ error: 'Server error' })
     }
 }
+
+export const deleteMaintenance = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const maintenance = await Maintenance.findById(req.params.id)
+
+    if (!maintenance) {
+      res.status(404).json({ error: 'Maintenance record not found' })
+      return
+    }
+
+    if (maintenance.status !== 'pending') {
+      res.status(400).json({ error: 'Can only delete pending requests' })
+      return
+    }
+
+    if (maintenance.ownerId.toString() !== req.ownerId) {
+      res.status(403).json({ error: 'Unauthorized' })
+      return
+    }
+
+    await maintenance.deleteOne()
+    res.status(200).json({ message: 'Deleted successfully' })
+
+  } catch (error) {
+    console.error('Delete maintenance error:', error)
+    res.status(500).json({ error: 'Server error' })
+  }
+}
