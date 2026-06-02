@@ -97,3 +97,22 @@ export const deleteMaintenance = async (token: string, id: string) => {
 
   return data
 }
+
+export const updateMaintenance = async (token: string, id: string, date: string) => {
+  const response = await fetch(`${API_URL}/owner/maintenance/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ date }),
+  })
+
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new Error(data.error || 'Failed to update maintenance request')
+  }
+
+  return data
+}

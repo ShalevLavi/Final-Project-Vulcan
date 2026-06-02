@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useModalStore } from '../../store/useModalStore'
 import styles from './Dashboard.module.css'
-import { getMaintenance, requestService, deleteMaintenance } from '../../api/auth'
+import { getMaintenance, requestService, deleteMaintenance, updateMaintenance } from '../../api/auth'
 import { connectSocket, disconnectSocket } from '../../api/socket'
 
 interface MaintenanceItem {
@@ -120,6 +120,26 @@ export default function Dashboard() {
     const handleDeleteMaintenance = async (id: string) => {
         try {
             await deleteMaintenance(token!, id)
+            const data = await getMaintenance(token!)
+            setMaintenanceList(data.maintenance)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const handleUpdateMaintenance = async (id: string, direction: 'earlier' | 'later') => {
+        try {
+            const now = new Date()
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            
+            const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+            const monthAfter = new Date(now.getFullYear(), now.getMonth() + 2, 1)
+
+            const newDate = direction === 'later'
+            ? `${months[monthAfter.getMonth()]} ${monthAfter.getFullYear()}`
+            : `${months[nextMonth.getMonth()]} ${nextMonth.getFullYear()}`
+
+            await updateMaintenance(token!, id, newDate)
             const data = await getMaintenance(token!)
             setMaintenanceList(data.maintenance)
         } catch (err) {
@@ -309,7 +329,15 @@ export default function Dashboard() {
                                 <div key={item._id} className={styles.maintItem}>
                                     <div>
                                         <p className={styles.maintItemName}>{item.serviceName}</p>
-                                        <p className={styles.maintItemDate}>{item.date}</p>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <p className={styles.maintItemDate}>{item.date}</p>
+                                            {item.status === 'pending' && (
+                                            <>
+                                                <button onClick={() => handleUpdateMaintenance(item._id, 'earlier')} className={styles.dateShiftBtn}>← Earlier</button>
+                                                <button onClick={() => handleUpdateMaintenance(item._id, 'later')} className={styles.dateShiftBtn}>Later →</button>
+                                            </>
+                                            )}
+                                        </div>
                                     </div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                         <span className={item.status === 'completed' ? styles.statusDone : styles.statusPending}>

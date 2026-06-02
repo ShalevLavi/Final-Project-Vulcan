@@ -83,3 +83,34 @@ export const deleteMaintenance = async (req: AuthRequest, res: Response): Promis
     res.status(500).json({ error: 'Server error' })
   }
 }
+
+export const updateMaintenance = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const maintenance = await Maintenance.findById(req.params.id)
+
+    if (!maintenance) {
+      res.status(404).json({ error: 'Maintenance record not found' })
+      return
+    }
+
+    if (maintenance.status !== 'pending') {
+      res.status(400).json({ error: 'Can only update pending requests' })
+      return
+    }
+
+    if (maintenance.ownerId.toString() !== req.ownerId) {
+      res.status(403).json({ error: 'Unauthorized' })
+      return
+    }
+
+    const { date } = req.body
+    maintenance.date = date
+    await maintenance.save()
+
+    res.status(200).json({ maintenance })
+
+  } catch (error) {
+    console.error('Update maintenance error:', error)
+    res.status(500).json({ error: 'Server error' })
+  }
+}
